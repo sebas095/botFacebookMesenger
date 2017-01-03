@@ -51,6 +51,13 @@ function evaluateMessage(recipientId, message) {
   let finalMessage = '';
   if (isContain(message, 'ayuda')) {
     finalMessage = 'Por el momento no te puedo ayudar';
+  } else if (isContain(message, 'gato')) {
+    sendMessageImage(recipientId);
+  } else if (isContain(message, 'clima')) {
+    getWeather(temperature => {
+      message = getMessageWeather(temperature);
+      sendMessageText(recipientId, message);
+    });
   } else {
     finalMessage = 'solo se repetir las cosas: ' + message;
   }
@@ -61,6 +68,20 @@ function sendMessageText(recipientId, message) {
   const messageData = {
     recipient: {id: recipientId},
     message: {text: message}
+  };
+  callSendAPI(messageData);
+}
+
+function sendMessageImage(recipientId) {
+  // API imgur para imagens dinamicas
+  const messageData = {
+    recipient: {id: recipientId},
+    message: {
+      attachment: {
+        type: 'image',
+        payload: {url: 'http://i.imgur.com/SOFXhd6.jpg'}
+      }
+    }
   };
   callSendAPI(messageData);
 }
@@ -77,6 +98,26 @@ function callSendAPI(messageData) {
       console.log('El mensaje fue enviado');
     }
   });
+}
+
+function getMessageWeather(temperature) {
+  if (temperature > 30) {
+    return "Nos encontramos a " + temperature + "°C y demasiado calor, te recomiendo que no salgas";
+  } else {
+    return "Nos encontramos a " + temperature + "°C es un bonito día para salir";
+  }
+}
+
+function getWeather(callback) {
+  request('http://api.geonames.org/findNearByWeatherJSON?lat=16.750000&lng=-93.11669&username=eduardo_gpg',
+    (err, res, data) => {
+      if (!err) {
+        res = JSON.parse(data);
+        const temperature = res.weatherObservation.temperature;
+        callback(temperature);
+      }
+    }
+  );
 }
 
 function isContain(sentence, word) {
