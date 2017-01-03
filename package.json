@@ -1,0 +1,26 @@
+{
+  "name": "bot-facebook-messenger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sebas095/botFacebookMesenger.git"
+  },
+  "author": "sebastian duque restrepo <sebas_tian_95@hotmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sebas095/botFacebookMesenger/issues"
+  },
+  "homepage": "https://github.com/sebas095/botFacebookMesenger#readme",
+  "dependencies": {
+    "body-parser": "1.15.2",
+    "express": "4.14.0",
+    "morgan": "1.7.0",
+    "request": "2.79.0"
+  }
+}
