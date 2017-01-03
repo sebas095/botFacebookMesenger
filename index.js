@@ -44,6 +44,41 @@ app.post('/webhook', (req, res) => {
 function receiveMessage(event) {
   const senderID = event.sender.id;
   const messageText = event.message.text;
-  console.log(senderID);
-  console.log(messageText);
+  evaluateMessage(senderID, messageText);
+}
+
+function evaluateMessage(recipientId, message) {
+  let finalMessage = '';
+  if (isContain(message, 'ayuda')) {
+    finalMessage = 'Por el momento no te puedo ayudar';
+  } else {
+    finalMessage = 'solo se repetir las cosas: ' + message;
+  }
+  sendMessageText(recipientId, finalMessage);
+}
+
+function sendMessageText(recipientId, message) {
+  const messageData = {
+    recipient: {id: recipientId},
+    message: {text: message}
+  };
+  callSendAPI(messageData);
+}
+
+function callSendAPI(messageData) {
+  request({
+    uri: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: {access_token: APP_TOKEN},
+    method: 'POST',
+    json: messageData
+  }, (err, res, data) => {
+    if (err) console.log('No es posible enviar el mensaje');
+    else {
+      console.log('El mensaje fue enviado');
+    }
+  });
+}
+
+function isContain(sentence, word) {
+  return sentence.indexOf(word) > -1;
 }
