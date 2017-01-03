@@ -58,6 +58,8 @@ function evaluateMessage(recipientId, message) {
       message = getMessageWeather(temperature);
       sendMessageText(recipientId, message);
     });
+  } else if (isContain(message, 'info')) {
+    sendMessageTemplate(recipientId);
   } else {
     finalMessage = 'solo se repetir las cosas: ' + message;
   }
@@ -84,6 +86,40 @@ function sendMessageImage(recipientId) {
     }
   };
   callSendAPI(messageData);
+}
+
+function sendMessageTemplate(recipientId) {
+  const messageData = {
+    recipient: {id: recipientId},
+    message: {
+      attachment: {
+        type: 'template',
+        payload: {
+          template_type: 'generic',
+          elements: [elementTemplate()]
+        }
+      }
+    }
+  };
+  callSendAPI(messageData);
+}
+
+function elementTemplate() {
+  return {
+    title: 'Sebastian Duque Restrepo',
+    subtitle: 'Estudiante de Ingenieria de Sistemas y Computación',
+    item_url: 'https://www.facebook.com/jointDeveloper/?fref=ts',
+    image_url: 'http://i.imgur.com/SOFXhd6.jpg',
+    buttons: [buttonTemplate()]
+  };
+}
+
+function buttonTemplate() {
+  return {
+    type: 'web_url',
+    url: 'https://www.facebook.com/jointDeveloper/?fref=ts',
+    title: 'jointDeveloper'
+  };
 }
 
 function callSendAPI(messageData) {
