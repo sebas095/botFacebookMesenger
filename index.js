@@ -26,3 +26,24 @@ app.get('/webhook', (req, res) => {
     res.send('Tú no tienes que entrar aquí');
   }
 });
+
+app.post('/webhook', (req, res) => {
+  const data = req.body;
+  if (data.object === 'page') {
+    data.entry.forEach((pageEntry) => {
+      pageEntry.messaging.forEach((messagingEvent) => {
+        if (messagingEvent.message) {
+          receiveMessage(messagingEvent);
+        }
+      });
+    });
+    res.sendStatus(200);
+  }
+});
+
+function receiveMessage(event) {
+  const senderID = event.sender.id;
+  const messageText = event.message.text;
+  console.log(senderID);
+  console.log(messageText);
+}
