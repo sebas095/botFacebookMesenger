@@ -23,6 +23,6 @@ app.get('/webhook', (req, res) => {
   if (req.query['hub.verify_token'] === 'test_token_say_hello') {
     res.send(req.query['hub.challenge']);
   } else {
-    res.send('Tú no tiene que entrar aquí');
+    res.send('Tú no tienes que entrar aquí');
   }
 });
